@@ -1,6 +1,5 @@
 # cadastro-clientes #
-Para começar, você pode usar o framework Flask para criar seu aplicativo web. Ele é fácil de usar e possui uma documentação clara. Para instalar o Flask, você precisará de Python 3.7 ou superior. 
-`python.exe -m pip install --upgrade pip`
+Para começar, você pode usar o framework Flask para criar seu aplicativo web. Ele é fácil de usar e possui uma documentação clara. Para instalar o Flask, você precisará de Python 3.7 ou superior. `python.exe -m pip install --upgrade pip`
 
 # Quickstart
 1. Crie um ambiente virtual para isolar as dependências do projeto: `python -m venv venv`

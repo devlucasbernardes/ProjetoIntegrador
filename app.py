@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Bem-vindo à agência de viagens!'
+    return render_template('index.html')
 
 @app.route('/cadastro')
 def cadastro():

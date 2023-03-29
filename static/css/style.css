@@ -231,7 +231,7 @@ body {
    flex: 50%;
  }
  
- /* Add a black background color to the foot navigation */
+ /* Add a orange background color to the foot navigation */
  .footnav {
    background-color: rgba(255, 127, 53, 0.932);
    overflow: hidden;

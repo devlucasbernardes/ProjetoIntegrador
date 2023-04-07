@@ -26,8 +26,6 @@ function checkInputs() {
 
   if (birthdateValue === "") {
     setErrorFor(birthdate, "A sua data de nascimento é obrigatória.");
-  } else if (checkBirthdate(birthdateValue)) {
-    setErrorFor(birthdate, "Por favor, insira uma data de nascimento válida - formato: 01/01/2001")
   } else {
     setSuccessFor(birthdate);
   }
@@ -35,7 +33,7 @@ function checkInputs() {
   if (cpfValue === "") {
     setErrorFor(cpf, "O seu CPF é obrigatório.");
   } else if (cpfValue.length != 11) {
-    setErrorFor(cpf, "Por favor, insira um CPF válido - formato: 111.111.111-11");
+    setErrorFor(cpf, "Por favor, insira um CPF válido.");
   } else {
     setSuccessFor(cpf);
   }
@@ -43,15 +41,13 @@ function checkInputs() {
   if (emailValue === "") {
     setErrorFor(email, "O seu e-mail é obrigatório.");
   } else if (!checkEmail(emailValue)) {
-    setErrorFor(email, "Por favor, insira um e-mail válido - formato: teste@exemplo.com");
+    setErrorFor(email, "Por favor, insira um e-mail válido.");
   } else {
     setSuccessFor(email);
   }
 
   if (celphoneValue === "") {
     setErrorFor(celphone, "O seu número de celular é obrigatório.");
-  } else if (!checkCelphone(celphoneValue)) {
-    setErrorFor(celphone, "Por favor, insira um número de celular válido - formato: (11)99999-9999");
   } else {
     setSuccessFor(celphone);
   }

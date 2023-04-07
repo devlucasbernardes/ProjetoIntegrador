@@ -9,29 +9,29 @@
           font-family: Arial, Helvetica, sans-serif;
         }
         </style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
     <title>Fox Travel</title>
 </head>
 <body>
         <div class="header">
-          <a href="#inicio" class="logo"><img src="{{ url_for ('static', filename = '/img/logo.png') }}" style="width:100%"></a>
+          <a href="#inicio" class="logo"><img src="/static/img/logo.png" style="width:100%"></a>
           <div class="header-right">
             <a class="active" href="#empresa">Empresa</a>
             <a href="#contato">Contato</a>
-            <a href="/cadastro">Cadastro</a>
+            <a href="/templates/cadastro.html">Cadastro</a>
           </div>
         </div>
         <div class="icons">
           <a href="#Facebook">
-          <img src="./static/img/facebook_icon.png" style="width:2%"></a>
+          <img src="/static/img/facebook_icon.png" style="width:2%"></a>
             <a href="#Instagram">
-              <img src="./static/img/instagram_icon.png" style="width:2%"></a>
+              <img src="/static/img/instagram_icon.png" style="width:2%"></a>
             <a href="#Linkedin">
-              <img src="./static/img/linkedin_icon.png" style="width:2%"></a>
+              <img src="/static/img/linkedin_icon.png" style="width:2%"></a>
             <a href="#Youtube">
-              <img src="./static/img/youtube_icon.png" style="width:2%"></a>
+              <img src="/static/img/youtube_icon.png" style="width:2%"></a>
             <a href="#Skype">
-              <img src="./static/img/skype_icon.png" style="width:2%"></a>
+              <img src="/static/img/skype_icon.png" style="width:2%"></a>
           </div>
     
   <!-- Slideshow container -->
@@ -46,12 +46,12 @@
 
     <!-- Full-width images with number and caption text -->
     <div class="mySlides fade">
-      <img src="{{ url_for ('static', filename= '/img/melhor_viagem.png') }}" style="width:100%">
+      <img src="/static/img/melhor_viagem.png" style="width:100%">
       <div class="text"></div>
     </div>
   
     <div class="mySlides fade">
-      <img src="{{ url_for ('static', filename= '/img/proximo_destino.png') }}" style="width:100%">
+      <img src="/static/img/proximo_destino.png" style="width:100%">
       <div class="text"></div>
     </div>
   
@@ -68,7 +68,7 @@
     <span class="dot" onclick="currentSlide(3)"></span>
   </div>
   
-  <script src="{{url_for ('static', filename = '/js/main.js') }}"></script>
+  <script src="/static/js/main.js"></script>
 
   <div class="footer">
     <div class="row">
@@ -88,7 +88,7 @@
         <p>CNPJ: 07.736.925/0001-44</p>
       </div>
       <div class="column">
-        <img src="{{ url_for ('static', filename= '/img/cartoes_bandeiras.png') }}" style="width:60%">
+        <img src="/static/img/cartoes_bandeiras.png" style="width:60%">
         <p>Cadastur: 26. 021.971.10.0001.1</p>
         <a href="#Condições_Gerais">
         <p>Condições Gerais / Contratos</a></p>

@@ -1,6 +1,30 @@
 from mysql.connector.errors import IntegrityError
 import mysql.connector
 import random
+import requests
+
+
+def cambio_hoje(moeda, base):
+    # Defina os cabeçalhos personalizados
+    headers = {
+        'apikey': 'AAk1TgCXVEbtBP65GvJz1SOoQJNtoA9R'
+    }
+    # URL da API de conversão de moeda (exchangerate-api.com)
+    url = f'https://api.apilayer.com/exchangerates_data/latest?symbols={moeda}&base={base}'
+    # Faça a solicitação HTTP com os cabeçalhos personalizados
+    response = requests.get(url, headers=headers)
+    return response
+
+def convert_cambio(de, para, qtd):
+    # Defina os cabeçalhos personalizados
+    headers = {
+        'apikey': 'AAk1TgCXVEbtBP65GvJz1SOoQJNtoA9R'
+    }
+    # URL da API de conversão de moeda (exchangerate-api.com)
+    url = f'https://api.apilayer.com/exchangerates_data/convert?to={para}&from={de}&amount={qtd}'
+    # Faça a solicitação HTTP com os cabeçalhos personalizados
+    response = requests.get(url, headers=headers)
+    return response
 
 def create_conn():
     conn = mysql.connector.connect(

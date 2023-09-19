@@ -13,3 +13,5 @@
         pip install flask
     Conecção com MySQL
         pip install mysql-connector-python
+    Request a API no BackEnd
+        pip install Flask requests

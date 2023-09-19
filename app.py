@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from functions import *
 
 app = Flask(__name__)
@@ -27,6 +27,19 @@ def efetiva_compra():
             return render_template('catalogo.html')
         if request.method == 'POST':
             return "Compra efetivada com sucesso!"
-        
+    
+
+@app.route('/cambio')
+def taxas_de_cambio():
+
+    #data = convert_cambio('USD','BRL', 1)
+    data = cambio_hoje('BRL', 'USD')
+    # Verifique se a solicitação foi bem-sucedida
+    if data.status_code == 200:
+        result = data.text
+        return result
+    else:
+        return jsonify({'error': 'Falha na solicitação'}), data.status_code
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Catalogo</title>
+  </head>
+  <body>
+    <h1>Aqui está o catalogo</h1>
+    {% for elemento in list_catalogo %}
+    <div>{{ elemento }}</div>
+    <img style="height: 20vh;" src="/static/img/{{ elemento[1]+'-'+elemento[2]+'.jpg' }}"/>
+    {% endfor %}
+  </body>
+</html>

@@ -13,12 +13,12 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap"
       rel="stylesheet"
     />
-    <title>Cadastro</title>
+    <title>Confirmação de Compra</title>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h2>Cadastre-se</h2>
+        <h2>Confirmação de Compra</h2>
       <form id="form" class="form" action="{{ url_for('cadastro') }}" method="post">
         <div class="form-control">
             <label for="nameClient">Nome completo*</label>
@@ -53,13 +53,21 @@
         </div>
     
         <div class="form-control">
-            <label for="celphone">Celular*</label>
-            <input type="text" id="celphone" name="DC_PHONE" placeholder="Digite seu celular com DDD..." maxlength="11" required />
+            <label for="celphone">Pacote*</label>
+            <input type="text" id="celphone" name="DC_PHONE" placeholder="Aqui vai o pacote a comprar" maxlength="11" required />
             <i class="fas fa-exclamation-circle"></i>
             <i class="fas fa-check-circle"></i>
             <small>Mensagem de erro</small>
         </div>    
-        <button type="submit">Enviar</button>
+
+        <div class="form-control">
+          <label for="celphone">Valor Total*</label>
+          <input type="text" id="celphone" name="DC_PHONE" placeholder="Aqui vai o valor total do pacote" maxlength="11" required />
+          <i class="fas fa-exclamation-circle"></i>
+          <i class="fas fa-check-circle"></i>
+          <small>Mensagem de erro</small>
+      </div>  
+        <button type="submit">Confirmar</button>
     </form>
     <script
     src="https://kit.fontawesome.com/f9e19193d6.js"

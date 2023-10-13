@@ -23,12 +23,27 @@ def catalogo():
 @app.route('/efetiva_compra', methods=['GET', 'POST'])
 def efetiva_compra():
         if request.method == 'GET':
+            info_pacote = ["País", "Cidade", "Descrrição da viagem", "Data incio", "Data fim", "1000"]
             #O usuário será redirecionado ao catalogo se tentar acessar essa pagina sem ser direcionado pelo catalogo
             return render_template('catalogo.html')
         if request.method == 'POST':
+<<<<<<< Updated upstream
+            # Obter a hora atual no servidor
+            import datetime
+            hora_recebimento = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            nome = request.form.get('nome')
+            # Faça o que quiser com o nome e a hora de recebimento
+            print("Nome recebido:", nome)
+            print("Hora de recebimento:", hora_recebimento)
+            
+            # Retorne uma resposta ou redirecione o usuário
+            return f"Nome recebido: {nome}, Hora de recebimento: {hora_recebimento}"
+
+
+=======
             return "Compra efetivada com sucesso!"
     
-
+>>>>>>> Stashed changes
 @app.route('/cambio')
 def taxas_de_cambio():
 

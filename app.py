@@ -25,7 +25,7 @@ def efetiva_compra():
         if request.method == 'GET':
             info_pacote = ["País", "Cidade", "Descrrição da viagem", "Data incio", "Data fim", "1000"]
             #O usuário será redirecionado ao catalogo se tentar acessar essa pagina sem ser direcionado pelo catalogo
-            return render_template('catalogo.html')
+            return render_template('efetiva_compra.html',info_pacote=info_pacote)
         if request.method == 'POST':
 <<<<<<< Updated upstream
             # Obter a hora atual no servidor

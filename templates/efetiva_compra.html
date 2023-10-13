@@ -81,8 +81,11 @@
 </head>
 <body>
     <div class="cabecalho">
-        <p>{{ info_pacote[0] }} - {{ info_pacote[1] }} R$: <label id="valorfinal"> </label></p>
+        <p>{{ info_pacote[0] }} - {{ info_pacote[1] }} R$: <label id="valorfinal">{{info_pacote[5]}}</label></p>
         <p>Descrição: {{ info_pacote[2] }}</p>
+        <label for="valor_pacote">Valor na Label:</label>
+        <label class="oculto" id="valor_pacote">{{info_pacote[5]}}</label>
+
 
         <span id= "valor" class="oculto">{{info_pacote[5]}}</span>
         <label>Data Inicio:</label>
@@ -91,6 +94,8 @@
         <label>Data Fim: </label>
         <span id="data_fim">{{info_pacote[4]}}</span>
 
+
+
     </div>
     
     <div class="container">
@@ -98,12 +103,14 @@
         <div class="form-confirmacao">
             <h1>Dados Pessoais</h1>
             <form id="FormConfirma" action="/efetiva_compra" method="POST">
-                
+
+                <input class="oculto" id="valor_oculto" name="valor_oculto" required value={{info_pacote[5]}}>
+
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required><br><br>
 
                 <label for="idade">Idade:</label>
-                <input type="number" id="idade" name="idade" required><br><br>
+                <input type="number" id="idade" name="idade" min="18" max="130" required><br><br>
 
                 <label for="civil"></label>Estado Civil</label>
                 <select id="civil" name="civil" required>
@@ -122,25 +129,22 @@
                 </select><br><br>
 
                 <label for="num_filhos">Número de Filhos:</label>
-                <input type="number" id="num_filhos" name="num_filhos"><br><br>
+                <input type="number" id="num_filhos" name="num_filhos" min="0" max="100" required><br><br>
 
                 <label for="renda_mensal">Renda Mensal:</label>
-                <input type="number" id="renda_mensal" name="renda_mensal" step="500,00" required><br><br>
-
-                <label for="Destino">Destino:</label>
-                <span id="Destino">{{info_pacote[1]}}</span><br><br>
+                <input type="number" id="renda_mensal" name="renda_mensal" min="0" step="500" required><br><br>
 
                 <label for="quantidade">Quantidade:</label>
-                <input type="number" id="quantidade" value="1" name="quantidade"><br><br>
+                <input type="number" id="quantidade" value="1" name="quantidade" min="1" max="1000" required> <br><br>
 
                 <label>Email:</label>
-                <input type="text" /><br><br>
+                <input type="text" required><br><br>
 
                 <label>Telefone</label>
-                <input type="number"/><br><br>
+                <input type="number" required><br><br>
 
                 <label>CPF</label>
-                <input type="number" placeholder="123 123 123-12" /><br><br>
+                <input type="text" id="cpf" name="cpf" placeholder="___.___.___-__" required><br><br>
 
                 <label for="Forma de Pagamento">Forma de Pagamento</label>
                 <select id="forma de pagamento" name="forma de pagamento" required>
@@ -148,53 +152,55 @@
                     <option value="Boleto">Boleto</option>
                     <option value="Cartão de credito">Cartão de credito</option>
                 </select><br><br>
+
             </form>
         </div>
 
-        <h1>Multiplicação de Valores</h1>
-    
-        <label for="valor-label">Valor na Label:</label>
-        <label id="valor-label">{{info_pacote[5]}}</label>
-        
-        <br>
-        
-        <label for="valor-input">Insira um valor:</label>
-        <input type="number" id="valor-input">
-        
-        <button id="calcular">Calcular</button>
-        
-        <br>
-        
-        <label for="resultado">Resultado:</label>
-        <label id="resultado">0</label>
-
     </div>
     <div class="rodape">
-      <form action="/efetiva_compra" method="POST">
         <button class="botao" type="button" id="botaoConfirma">Confirma Compra</button>
-      </form>
 </div>
 <script>
-        document.getElementById('calcular').addEventListener('click', function() {
+
+        const inputNumerico = document.getElementById("quantidade");
+
+        inputNumerico.addEventListener("input", function () {
             // Obtém o valor da label
-            var valorLabel = parseFloat(document.getElementById('valor-label').textContent);
+            var valorLabel = parseFloat(document.getElementById('valor_pacote').textContent);
             
             // Obtém o valor do input
-            var valorInput = parseFloat(document.getElementById('valor-input').value);
+            var valorInput = parseFloat(document.getElementById('quantidade').value);
             
             // Calcula o resultado
             var resultado = valorLabel * valorInput;
             
             // Exibe o resultado na label "resultado"
-            document.getElementById('resultado').textContent = resultado;
+            document.getElementById('valorfinal').textContent = resultado;
+            document.getElementById('valor_oculto').value = resultado;
         });
 
+        const botaoDeEnvio = document.getElementById("botaoConfirma");
+        const meuForm = document.getElementById("FormConfirma");
 
-    // Use JavaScript para adicionar um ouvinte de evento ao botão externo
-    document.getElementById('botaoConfirma').addEventListener('click', function() {
-        // Envia o formulário associado ao botão
-        document.getElementById('FormConfirma').submit();
-    });
+        botaoDeEnvio.addEventListener("click", function (event) {
+            // Verificar se todos os campos obrigatórios no formulário estão preenchidos
+            const camposObrigatorios = meuForm.querySelectorAll('[required]');
+            let todosCamposPreenchidos = true;
+
+            camposObrigatorios.forEach(function (campo) {
+                if (!campo.value.trim()) {
+                    todosCamposPreenchidos = false;
+                }
+            });
+
+            if (!todosCamposPreenchidos) {
+                event.preventDefault();
+                alert("Preencha todos os campos obrigatórios antes de enviar o formulário.");
+            }
+            else {
+            meuForm.submit();
+            }
+        });
 </script>
 </body>
 </html>

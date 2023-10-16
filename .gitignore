@@ -1,0 +1,5 @@
+
+venv/Scripts/activate.bat
+venv/Scripts/activate
+venv/pyvenv.cfg
+venv/Lib/site-packages/_distutils_hack/__pycache__/__init__.cpython-311.pyc

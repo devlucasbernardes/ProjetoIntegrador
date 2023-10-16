@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
   <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,28 +11,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap"
-      rel="stylesheet"
-    />
-    <title>Cadastro</title>
+      rel="stylesheet"/>
+    <title>Confirmação de Compra</title>
   </head>
   <body>
     <div class="container">
       <div class="header">
-        <h2>Cadastre-se</h2>
-      </div>
-
-      <form id="form" class="form">
+        <h2>Confirmação de Compra</h2>
+      <form id="form" class="form" action="{{ url_for('cadastro') }}" method="post">
         <div class="form-control">
-          <label for="nameClient">Nome completo*</label>
-          <input type="text" id="nameClient" pattern="([aA-zZ]+)" class="NameClient" placeholder="Digite seu nome completo..." />
-          <i class="fas fa-exclamation-circle"></i>
-          <i class="fas fa-check-circle"></i>
-          <small>Mensagem de erro</small>
+            <label for="nameClient">Nome completo*</label>
+            <input type="text" id="nameClient" name="DC_FULLNAME" pattern="^[\p{L}\s']+$" class="form-control" placeholder="Digite seu nome completo..." required />
+            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-check-circle"></i>
+            <small>Mensagem de erro</small>
         </div>
-
+    
         <div class="form-control">
             <label for="birthdate">Data de nascimento*</label>
-            <input type="date" id="birthdate" placeholder="Digite sua data de nascimento..." />
+            <input type="text" id="birthdate" name="DT_BIRTHDATE" placeholder="Digite sua data de nascimento..." pattern="(0[1-9]|[12][0-9]|3[01])[-/.](0[1-9]|1[012])[-/.](19|20)\d\d" required />
             <i class="fas fa-exclamation-circle"></i>
             <i class="fas fa-check-circle"></i>
             <small>Mensagem de erro</small>
@@ -46,38 +45,75 @@
 
           <div class="form-control">
             <label for="cpf">CPF*</label>
-            <input type="number_format" id="cpf" placeholder="Digite seu CPF..." 
-            pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" maxlength="11" />
+            <input type="text" id="cpf" name="DC_DOCUMENT" placeholder="Digite seu CPF..." maxlength="14" required />
             <i class="fas fa-exclamation-circle"></i>
             <i class="fas fa-check-circle"></i>
             <small>Mensagem de erro</small>
-          </div>
+        </div>
+    
+        <div class="form-control">
+            <label for="email">E-mail*</label>
+            <input type="email" id="email" name="DC_MAIL" placeholder="Digite seu e-mail.." required />
+            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-check-circle"></i>
+            <small>Mensagem de erro</small>
+        </div>
+    
+        <div class="form-control">
+            <label for="celphone">Pacote*</label>
+            <input type="text" id="celphone" name="DC_PHONE" placeholder="Aqui vai o pacote a comprar" maxlength="11" required />
+            <i class="fas fa-exclamation-circle"></i>
+            <i class="fas fa-check-circle"></i>
+            <small>Mensagem de erro</small>
+        </div>    
 
         <div class="form-control">
-          <label for="email">E-mail*</label>
-          <input type="text" id="email" placeholder="Digite seu e-mail.." />
+          <label for="celphone">Valor Total*</label>
+          <input type="text" id="celphone" name="DC_PHONE" placeholder="Aqui vai o valor total do pacote" maxlength="11" required />
           <i class="fas fa-exclamation-circle"></i>
           <i class="fas fa-check-circle"></i>
           <small>Mensagem de erro</small>
-        </div>
-
-        <div class="form-control">
-          <label for="celphone">Celular*</label>
-          <input type="number_format" id="celphone" placeholder="Digite seu celular com DDD..." maxlength="11" />
-          <i class="fas fa-exclamation-circle"></i>
-          <i class="fas fa-check-circle"></i>
-          <small>Mensagem de erro</small>
-        </div>
-
-        <button type="submit">Enviar</button>
-      </form>
-    </div>
-
+      </div>  
+        <button type="submit">Confirmar</button>
+    </form>
     <script
-      src="https://kit.fontawesome.com/f9e19193d6.js"
-      crossorigin="anonymous"
-    ></script>
+    src="https://kit.fontawesome.com/f9e19193d6.js"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    $(document).ready(function () {
+      $('#birthdate').mask('00/00/0000');
+      $('#cpf').mask('000.000.000-00');
+    });
 
-    <script src="/static/js/cadastro.js"></script>
+    function isValidCPF(cpf) {
+    if (typeof cpf !== 'string') return false;
+    cpf = cpf.replace(/\D/g, '');
+    if (cpf.length !== 11 || !Array.from(cpf).filter(e => e !== cpf[0]).length) {
+      return false;
+    }
+    let sum = 0,
+      remainder;
+    for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf.substring(9, 10))) return false;
+    sum = 0;
+    for (let i = 1; i <= 10; i++) sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf.substring(10, 11))) return false;
+    return true;
+  }
+
+  document.getElementById("form").addEventListener("submit", function (event) {
+        const cpfInput = document.getElementById("cpf");
+        const cpf = cpfInput.value;
+        if (!isValidCPF(cpf)) {
+          event.preventDefault();
+          alert("CPF inválido");
+        }
+      });
+    </script>
   </body>
 </html>

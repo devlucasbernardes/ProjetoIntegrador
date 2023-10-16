@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+<<<<<<< Updated upstream
     font-family: "Poppins", sans-serif;
 }
 
@@ -12,6 +13,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+=======
+    font-family: sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 127, 53, 0.932);
+>>>>>>> Stashed changes
 }
 
 h1 {
@@ -20,12 +32,18 @@ h1 {
 }
 
 .container {
+<<<<<<< Updated upstream
     background-color: #fafafa;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     width: 400px;
     max-width: 100%;
     overflow: hidden;
+=======
+    background-color: #fff;
+    border-radius: 7px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.363);
+>>>>>>> Stashed changes
     padding: 20px;
 }
 

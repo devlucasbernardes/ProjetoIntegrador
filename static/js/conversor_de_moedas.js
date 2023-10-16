@@ -8,7 +8,7 @@ async function converterMoeda(){
     try {
         let response = await fetch(requestURL);
         let data = await response.json();
-        resultado.textContent = Number(data.USDBRL.high).toFixed(2)*Number(quantia.value);
+        resultado.textContent = Number(data.USDBRL.high).toFixed(2)*Number(quantia.value).toFixed(2);
       } catch (error) {
         console.log(error);
       }

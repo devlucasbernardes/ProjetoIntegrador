@@ -49,6 +49,10 @@ def taxas_de_cambio():
         return result
     else:
         return jsonify({'error': 'Falha na solicitação'}), data.status_code
+    
+@app.route('/conversor')
+def conversor():
+        return render_template('conversor_de_moedas.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

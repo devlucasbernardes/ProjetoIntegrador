@@ -11,16 +11,8 @@ async function converterMoeda(){
         resultado.textContent = Number(data.USDBRL.high).toFixed(2)*Number(quantia.value);
       } catch (error) {
         console.log(error);
-<<<<<<< Updated upstream
       }
       
-=======
-        // Expected output: ReferenceError: nonExistentFunction is not defined
-        // (Note: the exact output may be browser-dependent)
-      }
-      
-
->>>>>>> Stashed changes
 }
 
 botaoConverter.addEventListener("click", (e) => {

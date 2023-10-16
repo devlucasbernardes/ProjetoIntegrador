@@ -99,3 +99,18 @@
     visibility: visible;
     color: #e74c3c;
   }
+
+  .sex {
+    margin-bottom: 10px;
+    padding-bottom: 15px;
+    position: relative;
+  }
+
+  .sex label {
+    display: inline-block;
+  }
+
+  .sex input {
+    display: inline-block;
+    width: 5%;
+  }

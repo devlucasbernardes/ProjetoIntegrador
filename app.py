@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 from functions import *
 from datetime import datetime
+
 
 app = Flask(__name__)
 

@@ -30,7 +30,7 @@ def create_conn():
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="",
+        password="1?2A6k6=",
         database="db_pi"
     )
     return conn

@@ -31,7 +31,7 @@ def create_conn():
         host="localhost",
         user="root",
         password="",
-        database="db_pi"
+        database="db_pi2"
     )
     return conn
 
@@ -65,6 +65,52 @@ def valida_idcatalogo(id):
     return random.choice([True, False])
 
 def get_catalogo():
-     #list_catalogo = [[id_pacote, cidade, pais, valor, descrição, data_ini, data_fim]]
-     list_catalogo = [[1, "São Paulo", "Brasil", 300.00, "Descrição aqui", "05/09/2023", "07/09/2023"],[2, "Paris", "França", 7000.00, "Descrição aqui", "05/09/2023", "25/09/2023"],[3, "Madrid", "Espanha", 5500.00, "Descrição aqui", "12/09/2023", "27/09/2023"]]
-     return list_catalogo
+
+    try:
+        # Conectar ao banco de dados
+        conn = create_conn()
+
+        # Criar um cursor
+        cursor = conn.cursor()
+
+        # Definir a consulta SQL para buscar todos os valores da tabela tb_package
+        sql_query = "SELECT p.CD_ID AS PackageID, d.DC_COUNTRY AS DestinationCountry, d.DC_CITY AS DestinationCity, p.VL_VALUE AS PackageValue, p.DC_DESCRIPTION AS PackageDescription, p.DT_START_DATE AS StartDate, p.DT_END_DATE AS EndDate FROM tb_package AS p INNER JOIN tb_destiny AS d ON p.id_DESTINY = d.CD_ID;"
+
+        # Executar a consulta
+        cursor.execute(sql_query)
+
+        # Recuperar todos os resultados
+        resultados = cursor.fetchall()
+
+        resultados_formatados = []
+
+
+        # Função para formatar o valor como decimal
+        def formatar_valor(valor):
+            return '{:.2f}'.format(valor)  # Formata o valor com duas casas decimais
+
+        # Função para formatar a data
+        def formatar_data(data):
+            # Formatar a data do formato "YYYY-MM-DD" para "DD/MM/YYYY"
+            return data.strftime("%d/%m/%Y")
+
+        # Iterar pelos resultados e imprimir
+        for resultado in resultados:
+            resultado_formatado = list(resultado)  # Converte a tupla para uma lista
+            resultado_formatado[5] = formatar_data(resultado_formatado[5])
+            resultado_formatado[6] = formatar_data(resultado_formatado[6])
+            resultado_formatado[3] = formatar_valor(resultado_formatado[3])
+            resultados_formatados.append(resultado_formatado)
+
+        # Imprimir os resultados formatados
+        #for resultado in resultados_formatados:
+            #print(resultado)
+        return resultados_formatados
+    
+    except mysql.connector.Error as err:
+        print("Erro:", err)
+
+    finally:
+        # Fechar o cursor e a conexão
+        cursor.close()
+        conn.close()

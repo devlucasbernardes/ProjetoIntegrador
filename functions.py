@@ -1,6 +1,5 @@
 from mysql.connector.errors import IntegrityError
 import mysql.connector
-import random
 import requests
 
 
@@ -36,33 +35,36 @@ def create_conn():
     return conn
 
 def efetiva_compra():
-        fullname = request.form['DC_FULLNAME']
-        birthdate = request.form['DT_BIRTHDATE']
-        birthdate = datetime.strptime(birthdate, "%d/%m/%Y").strftime("%Y-%m-%d")
-        document = request.form['DC_DOCUMENT']
-        email = request.form['DC_MAIL']
-        phone = request.form['DC_PHONE']
-        
-        conn = create_conn()
-        cursor = conn.cursor()
-        
-        try:
-            sql_query = "INSERT INTO TB_CLIENTS (DC_FULLNAME, DT_BIRTHDATE, DC_DOCUMENT, DC_MAIL, DC_PHONE) VALUES (%s, %s, %s, %s, %s)"
-            cursor.execute(sql_query, (fullname, birthdate, document, email, phone))
-            conn.commit()
-        except IntegrityError as err:
-                print("Erro:", err)
-        except mysql.connector.Error as err:
-            print("Erro:", err)
-        finally:
-            cursor.close()
-            conn.close()
+    return "Ok"
 
 def valida_idcatalogo(id):
-     #return bool
-     #validade se o id passado como parametro for verdadeiro
-    print(id)
-    return random.choice([True, False])
+    try:
+        # Conectar ao banco de dados
+        conn = create_conn()
+
+        # Criar um cursor
+        cursor = conn.cursor()
+
+        # Consulta SQL para verificar a existência do ID na tabela tb_package
+        sql_query = "SELECT CD_ID FROM tb_package WHERE CD_ID = %s"
+        cursor.execute(sql_query, (id,))
+
+        # Verificar se o ID existe
+        resultado = cursor.fetchone()
+
+        if resultado:
+            return True  # O ID existe na tabela
+        else:
+            return False  # O ID não existe na tabela
+
+    except mysql.connector.Error as err:
+        print("Erro:", err)
+        return False
+
+    finally:
+        # Fechar o cursor e a conexão
+        cursor.close()
+        conn.close()
 
 def get_catalogo():
 

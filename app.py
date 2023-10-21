@@ -64,9 +64,11 @@ def cadastro():
 @app.route('/efetiva_compra', methods=['GET', 'POST'])
 def efetiva_compra():
         if request.method == 'GET':
-            info_pacote = ["País", "Cidade", "Descrição da viagem", "Data incio", "Data fim", "1000"]
-            #O usuário será redirecionado ao catalogo se tentar acessar essa pagina sem ser direcionado pelo catalogo
-            return render_template('efetiva_compra.html',info_pacote=info_pacote)
+            id = request.args.get('id')
+            if valida_idcatalogo(id) :
+                return "Ok"
+            else:
+                return "Erro"
         if request.method == 'POST':
             # Obter a hora atual no servidor
             import datetime

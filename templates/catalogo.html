@@ -3,12 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <title>Catalogo</title>
+
+    <script>
+      function enviarValor(elemento) {
+          // Obtém o valor da div clicada
+          var valor = elemento.getAttribute('data-value');
+          
+          // Monta a URL com o parâmetro valor=10
+          var url = '/efetiva_compra?id=' + valor;
+
+          // Faz a requisição GET à rota
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', url, true);
+          xhr.onload = function () {
+              if (xhr.status === 200) {
+                
+                  console.log('Compra efetuada com sucesso');
+              } else {
+                  console.error('Erro na compra:', xhr.statusText);
+              }
+          };
+          xhr.send();
+      }
+  </script>
+
   </head>
   <body>
     <h1>Aqui está o catalogo</h1>
     {% for elemento in list_catalogo %}
-    <div>{{ elemento }}</div>
-    <img style="height: 20vh;" src="/static/img/{{ elemento[1]+'-'+elemento[2]+'.jpg' }}"/>
+    <div id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)"  style="border: 1px solid #4982c4; padding: 10px; margin: 5px; cursor: pointer;">
+
+      <div>{{ elemento }}</div>
+      <img style="height: 20vh;" src="/static/img/{{ elemento[1]+'-'+elemento[2]+'.jpg' }}"/>
+      
+    </div>
     {% endfor %}
   </body>
 </html>

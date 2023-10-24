@@ -1,6 +1,8 @@
 from mysql.connector.errors import IntegrityError
 import mysql.connector
 import requests
+from decimal import Decimal
+from datetime import datetime
 
 
 def cambio_hoje(moeda, base):
@@ -116,3 +118,63 @@ def get_catalogo():
         # Fechar o cursor e a conexão
         cursor.close()
         conn.close()
+
+def format_decimal(value):
+    # Formata o valor decimal com duas casas decimais
+    return f'{value:.2f}'
+
+def format_date(date):
+    # Formata a data no formato "YYYY-MM-DD"
+    return date.strftime('%d/%m/%y')
+
+def get_package_and_destination_by_id(package_id):
+    try:
+        # Conectar ao banco de dados
+        conn = create_conn()
+
+        # Criar um cursor
+        cursor = conn.cursor(dictionary=True)
+
+        # Consulta SQL para recuperar informações do pacote e destino com base no ID do pacote
+        query = """
+        SELECT d.DC_COUNTRY AS Country, d.DC_CITY AS DestinationCity, 
+               p.DC_DESCRIPTION AS DESCRIPTION, p.DT_START_DATE AS START_DATE, 
+               p.DT_END_DATE AS END_DATE, p.VL_VALUE AS VALUE, p.CD_ID AS PackageID
+        FROM tb_package AS p
+        INNER JOIN tb_destiny AS d ON p.id_DESTINY = d.CD_ID
+        WHERE p.CD_ID = %s
+        """
+
+        # Executar a consulta com o ID do pacote fornecido
+        cursor.execute(query, (package_id,))
+
+        # Obter o resultado da consulta
+        result = cursor.fetchone()
+
+        # Verificar se a consulta retornou resultados
+        if result:
+            # Formatar os valores e datas
+            result["VALUE"] = format_decimal(Decimal(result["VALUE"]))
+            result["START_DATE"] = format_date(result["START_DATE"])
+            result["END_DATE"] = format_date(result["END_DATE"])
+            
+            # Criar uma lista com os resultados formatados
+            formatted_result = [result["Country"], result["DestinationCity"], 
+                                result["DESCRIPTION"], result["START_DATE"], 
+                                result["END_DATE"], result["VALUE"], result["PackageID"]]
+            
+            return formatted_result
+        else:
+            return ["Pacote não encontrado."]
+
+    except mysql.connector.Error as error:
+        print("Erro ao conectar ao banco de dados:", error)
+        return [None]
+
+    finally:
+        # Fechar o cursor e a conexão
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+

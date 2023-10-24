@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 from functions import *
 from datetime import datetime
-
 
 app = Flask(__name__)
 
@@ -9,18 +8,11 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/catalogo', methods=['GET', 'POST'])
+@app.route('/catalogo', methods=['GET'])
 def catalogo():
     if request.method == 'GET':
         list_catalogo = get_catalogo()
         return render_template('catalogo.html', list_catalogo=list_catalogo)
-    if request.method == 'POST':
-        #pegar o id do catalogo e passar como parametro para função valida_idcatalogo(id)
-        id = 999
-        if valida_idcatalogo(id):
-            return render_template('efetiva_compra.html')
-        else:
-            return "Id invalido"
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -65,10 +57,16 @@ def cadastro():
 def efetiva_compra():
         if request.method == 'GET':
             id = request.args.get('id')
-            if valida_idcatalogo(id) :
-                return "Ok"
+            if valida_idcatalogo(id):
+                info_pacote = get_package_and_destination_by_id(id)
+                print(info_pacote)
+                if info_pacote:
+                    return render_template('efetiva_compra.html', info_pacote=info_pacote)
+                else:
+                    return "Erro"
             else:
                 return "Erro"
+                
         if request.method == 'POST':
             # Obter a hora atual no servidor
             import datetime
@@ -80,19 +78,7 @@ def efetiva_compra():
             print("Hora de recebimento:", hora_recebimento)
             # Retorne uma resposta ou redirecione o usuário
             return f"Nome recebido: {nome}, Valor: {valor}, Hora de recebimento: {hora_recebimento}"
-
-@app.route('/cambio')
-def taxas_de_cambio():
-
-    #data = convert_cambio('USD','BRL', 1)
-    data = cambio_hoje('BRL', 'USD')
-    # Verifique se a solicitação foi bem-sucedida
-    if data.status_code == 200:
-        result = data.text
-        return result
-    else:
-        return jsonify({'error': 'Falha na solicitação'}), data.status_code
-    
+  
 @app.route('/conversor')
 def conversor():
         return render_template('conversor_de_moedas.html')

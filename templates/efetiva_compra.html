@@ -81,20 +81,15 @@
 </head>
 <body>
     <div class="cabecalho">
-        <p>{{ info_pacote[0] }} - {{ info_pacote[1] }} R$: <label id="valorfinal">{{info_pacote[5]}}</label></p>
+        <p>{{ info_pacote[1] }} - {{ info_pacote[0] }} R$: <label id="valorfinal">{{info_pacote[5]}}</label></p>
         <p>Descrição: {{ info_pacote[2] }}</p>
-        <label for="valor_pacote">Valor na Label:</label>
         <label class="oculto" id="valor_pacote">{{info_pacote[5]}}</label>
 
-
-        <span id= "valor" class="oculto">{{info_pacote[5]}}</span>
         <label>Data Inicio:</label>
         <span id="data_inicial">{{info_pacote[3]}}</span>
         
         <label>Data Fim: </label>
         <span id="data_fim">{{info_pacote[4]}}</span>
-
-
 
     </div>
     

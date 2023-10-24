@@ -6,26 +6,16 @@
 
     <script>
       function enviarValor(elemento) {
-          // Obtém o valor da div clicada
-          var valor = elemento.getAttribute('data-value');
-          
-          // Monta a URL com o parâmetro valor=10
-          var url = '/efetiva_compra?id=' + valor;
+        // Obtém o valor da div clicada
+        var valor = elemento.getAttribute('data-value');
+        
+        // Monta a URL com o parâmetro valor
+        var url = '/efetiva_compra?id=' + valor;
 
-          // Faz a requisição GET à rota
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', url, true);
-          xhr.onload = function () {
-              if (xhr.status === 200) {
-                
-                  console.log('Compra efetuada com sucesso');
-              } else {
-                  console.error('Erro na compra:', xhr.statusText);
-              }
-          };
-          xhr.send();
+        // Redireciona o navegador para a nova página
+        window.location.href = url;
       }
-  </script>
+    </script>
 
   </head>
   <body>

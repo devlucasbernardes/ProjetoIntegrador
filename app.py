@@ -11,7 +11,11 @@ def index():
 @app.route('/catalogo', methods=['GET'])
 def catalogo():
     if request.method == 'GET':
-        list_catalogo = get_catalogo()
+        list_catalogo = [[1,'Brasil','Rio de Janeiro' ,500.00, 'Pacote de férias para praia','2023-11-01', '2023-11-15'],
+                         [2,'Brasil','São Paulo' ,350.00, 'Pacote de férias para a selva de Pedra','2023-11-01', '2023-11-15'],
+                         [3,'França','Paris' ,5350.00, 'O melhor da gastronomia mundial','2023-11-01', '2023-11-15'],
+                         [4,'Espanha','Madrid' ,4200.00, 'Venha para uma tourada','2023-11-01', '2023-11-15']] 
+                        #ID, PAIS, CIDADE, PREÇO POR CABEÇA, DESCRIÇÃO BREVE, IDA E VOLTA
         return render_template('catalogo.html', list_catalogo=list_catalogo)
 
 @app.route('/cadastro', methods=['GET', 'POST'])

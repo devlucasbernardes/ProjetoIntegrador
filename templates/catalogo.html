@@ -4,29 +4,100 @@
     <meta charset="UTF-8" />
     <title>Catalogo</title>
 
+    <style>
+
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: rgba(255, 127, 53, 0.932);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        font-size: 32px;
+        text-align: center;
+        color: #f1f1f1;
+        margin-top: 20px;
+        font-weight: bold;
+      }
+
+      .package-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 20px;
+      }
+
+      .package {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        width: 300px;
+        margin: 10px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .package:hover {
+        transform: scale(1.05);
+      }
+
+      .package-image {
+        width: 100%;
+        height: auto;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+      }
+
+      .package-description {
+        padding: 20px;
+        flex-grow: 1;
+      }
+
+      .package-title {
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+        margin-top: 0;
+      }
+
+      .package-info {
+        color: #777;
+        margin-bottom: 10px;
+      }
+    </style>
+
     <script>
       function enviarValor(elemento) {
-        // Obtém o valor da div clicada
         var valor = elemento.getAttribute('data-value');
-        
-        // Monta a URL com o parâmetro valor
         var url = '/efetiva_compra?id=' + valor;
-
-        // Redireciona o navegador para a nova página
         window.location.href = url;
       }
     </script>
 
   </head>
   <body>
-    <h1>Aqui está o catalogo</h1>
-    {% for elemento in list_catalogo %}
-    <div id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)"  style="border: 1px solid #4982c4; padding: 10px; margin: 5px; cursor: pointer;">
-
-      <div>{{ elemento }}</div>
-      <img style="height: 20vh;" src="/static/img/{{ elemento[1]+'-'+elemento[2]+'.jpg' }}"/>
-      
+    <h1>Os melhores pacotes você encontra aqui</h1>
+    <div class="package-list">
+      {% for elemento in list_catalogo %}
+      <div class="package" id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)">
+        <img class="package-image" src="/static/img/{{ elemento[2]+'-'+elemento[1]+'.jpg' }}" />
+        <div class="package-description">
+          <h2 class="package-title">{{ elemento[4] }}</h2>
+          <p class="package-info"><strong>Destino:</strong> {{ elemento[2] }}</p>
+          <p class="package-info"><strong>Preço:</strong> R$ {{ elemento[3] }}</p>
+          <p class="package-info"><strong>Ida:</strong> {{ elemento[5] }}</p>
+          <p class="package-info"><strong>Volta:</strong> {{ elemento[6] }}</p>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </body>
 </html>
+

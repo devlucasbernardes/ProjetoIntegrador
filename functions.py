@@ -106,7 +106,7 @@ def get_catalogo():
             resultado_formatado[3] = formatar_valor(resultado_formatado[3])
             resultados_formatados.append(resultado_formatado)
 
-        Imprimir os resultados formatados
+        # Imprimir os resultados formatados
         for resultado in resultados_formatados:
             print(resultado)
         return resultados_formatados

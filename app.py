@@ -11,10 +11,17 @@ def index():
 @app.route('/catalogo', methods=['GET'])
 def catalogo():
     if request.method == 'GET':
-        list_catalogo = [[1,'Brasil','Rio de Janeiro' ,500.00, 'Pacote de férias para praia','2023-11-01', '2023-11-15'],
-                         [2,'Brasil','São Paulo' ,350.00, 'Pacote de férias para a selva de Pedra','2023-11-01', '2023-11-15'],
-                         [3,'França','Paris' ,5350.00, 'O melhor da gastronomia mundial','2023-11-01', '2023-11-15'],
-                         [4,'Espanha','Madrid' ,4200.00, 'Venha para uma tourada','2023-11-01', '2023-11-15']] 
+        list_catalogo = [[1,'Brasil', 'Rio de Janeiro', 500.00, 'Pacote de férias para praia', '2023-11-01', '2023-11-15'],#
+                        [2,'Estados Unidos', 'Nova Iorque', 800.00, 'Pacote de aventura nas montanhas', '2023-10-20','2023-10-30'],#
+                        [3,'França', 'Paris', 350.00, 'Pacote cultural na cidade', '2023-12-05','2023-12-20'],#
+                        [4,'Reino Unido', 'Londres', 700.00, 'Pacote de esportes aquáticos', '2023-11-15','2023-11-30'],
+                        [5,'Italia','Roma', 900.00, 'Pacote de lua de mel', '2023-10-25','2023-11-05'],
+                        [6,'Espanha', 'Madrid', 600.00, 'Pacote de relaxamento na floresta', '2023-11-10','2023-11-28'],
+                        [7,'Australia', 'Sydney', 450.00, 'Pacote gastronômico na cidade', '2023-12-15','2023-12-30'],
+                        [8,'Alemanha', 'Berlim', 550.00, 'Pacote de ecoturismo', '2023-10-15', '2023-10-25'],
+                        [9,'Canada', 'Toronto', 750.00, 'Pacote de esqui nas montanhas', '2023-12-01','2023-12-15'],
+                        [10,'Japão', 'Tóquio', 400.00, 'Pacote de turismo histórico', '2023-11-05', '2023-11-20']]
+                       
                         #ID, PAIS, CIDADE, PREÇO POR CABEÇA, DESCRIÇÃO BREVE, IDA E VOLTA
         return render_template('catalogo.html', list_catalogo=list_catalogo)
 

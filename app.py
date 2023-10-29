@@ -69,19 +69,25 @@ def efetiva_compra():
                 
         if request.method == 'POST':
             # Obter a hora atual no servidor
-            import datetime
-            hora_recebimento = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            nome = request.form['nome']
-            valor = request.form['valor_oculto']
+            #import datetime
+            #hora_recebimento = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            #nome = request.form['nome']
+            #valor = request.form['valor_oculto']
             # Faça o que quiser com o nome e a hora de recebimento
-            print("Nome recebido:", nome)
-            print("Hora de recebimento:", hora_recebimento)
+            #print("Nome recebido:", nome)
+            #print("Hora de recebimento:", hora_recebimento)
             # Retorne uma resposta ou redirecione o usuário
-            return f"Nome recebido: {nome}, Valor: {valor}, Hora de recebimento: {hora_recebimento}"
+            #return f"Nome recebido: {nome}, Valor: {valor}, Hora de recebimento: {hora_recebimento}"
+            return render_template('confirmacao.html')
   
 @app.route('/conversor')
 def conversor():
         return render_template('conversor_de_moedas.html')
+
+@app.route('/confirmacao')
+def confirmacao():
+        return render_template('confirmacao.html')
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

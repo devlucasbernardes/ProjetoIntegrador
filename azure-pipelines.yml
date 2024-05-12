@@ -1,19 +1,32 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
-- master
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - '*'
+  tags:
+    include:
+      - 'prod_*'
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: |
+    python -m venv venv
+    source venv/bin/activate
+    pip install flask mysql-connector-python requests
+  displayName: 'Instalar dependências'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    python -m unittest discover -s tests
+  displayName: 'Executar testes'
+
+- script: |
+    source venv/bin/activate
+    export FLASK_APP=app.py
+    flask run --host=0.0.0.0
+  displayName: 'Iniciar aplicação Flask'
+  env:
+    FLASK_ENV: production

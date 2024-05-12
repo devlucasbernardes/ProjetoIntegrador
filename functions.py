@@ -29,10 +29,10 @@ def convert_cambio(de, para, qtd):
 
 def create_conn():
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="db_pi2"
+        host="db-infra-pi.database.windows.net",
+        user="admin_pi",
+        password="K!uuxhfh5EJzR7V",
+        database="projetoPI"
     )
     return conn
 

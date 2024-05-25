@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Catalogo</title>
-
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Pacotes</title>
     <style>
-
-
       body {
         font-family: Arial, sans-serif;
         background-color: rgba(255, 127, 53, 0.932);
@@ -71,18 +69,27 @@
         color: #777;
         margin-bottom: 10px;
       }
-    </style>
 
-    <script>
-      function enviarValor(elemento) {
-        var valor = elemento.getAttribute('data-value');
-        var url = '/efetiva_compra?id=' + valor;
-        window.location.href = url;
+      .weather-info {
+        margin-top: 10px;
+        font-size: 0.9em;
       }
-    </script>
-
-  </head>
-  <body>
+      .weather-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .weather-item img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+      .weather-item p {
+        margin: 0;
+      }
+    </style>
+</head>
+<body>
     <h1>Os melhores pacotes você encontra aqui</h1>
     <div class="package-list">
       {% for elemento in list_catalogo %}
@@ -94,10 +101,51 @@
           <p class="package-info"><strong>Preço:</strong> R$ {{ elemento[3] }}</p>
           <p class="package-info"><strong>Ida:</strong> {{ elemento[5] }}</p>
           <p class="package-info"><strong>Volta:</strong> {{ elemento[6] }}</p>
+          <div id="weather-info-{{ elemento[0] }}" class="weather-info"></div>
         </div>
       </div>
       {% endfor %}
     </div>
-  </body>
+    <script>
+      function enviarValor(elemento) {
+        var valor = elemento.getAttribute('data-value');
+        var url = '/efetiva_compra?id=' + valor;
+        window.location.href = url;
+      }
+      function fetchWeather(city, country, packageId) {
+        fetch(`/weather?city=${city}&country=${country}`)
+            .then(response => response.json())
+            .then(data => {
+                displayWeather(data, packageId);
+            });
+      }
+
+      function displayWeather(data, packageId) {
+          let weatherElement = document.getElementById(`weather-info-${packageId}`);
+          weatherElement.innerHTML = `
+              <h3>Previsão Climática para ${data.city.name}</h3>
+              ${data.list.slice(0, 7).map(item => `
+                  <div class="weather-item">
+                      <p>${new Date(item.dt_txt).toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' })} ${new Date(item.dt_txt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
+                      <img src="http://openweathermap.org/img/wn/${item.weather[0].icon}.png" alt="${item.weather[0].description}" />
+                      <p>${item.main.temp}°C, ${item.weather[0].description}</p>
+                  </div>
+              `).join('')}
+          `;
+      }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const packages = [
+            {% for elemento in list_catalogo %}
+            { city: '{{ elemento[2] }}', country: '{{ elemento[1] }}', id: '{{ elemento[0] }}' },
+            {% endfor %}
+        ];
+        
+        packages.forEach(pkg => {
+            fetchWeather(pkg.city, pkg.country, pkg.id);
+        });
+    });
+    </script>
+</body>
 </html>
 

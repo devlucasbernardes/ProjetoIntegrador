@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from functions import *
 from datetime import datetime
-import os
 
 app = Flask(__name__)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -14,7 +14,27 @@ def catalogo():
     if request.method == 'GET':
         list_catalogo = get_catalogo()
         return render_template('catalogo.html', list_catalogo=list_catalogo)
+    if request.method == 'POST':
+        id = 999
+        if valida_idcatalogo(id):
+            return render_template('efetiva_compra.html')
+        else:
+            return "Id Invalido"
 
+@app.route('/weather', methods=['GET'])
+def weather():
+    city = request.args.get('city')
+    country = request.args.get('country')
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    lat, lon = get_coordinates(city, country)
+    if lat is not None and lon is not None:
+        data = get_weather_forecast(lat, lon, start_date, end_date, OPENWEATHER_API_KEY)
+        return jsonify(data)
+    else:
+        return jsonify({'error': 'Unable to fetch coordinates'})
+    
+    
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
@@ -80,7 +100,7 @@ def efetiva_compra():
             # Retorne uma resposta ou redirecione o usuário
             #return f"Nome recebido: {nome}, Valor: {valor}, Hora de recebimento: {hora_recebimento}"
             return render_template('confirmacao.html')
-  
+
 @app.route('/conversor')
 def conversor():
         return render_template('conversor_de_moedas.html')

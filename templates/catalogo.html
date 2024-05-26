@@ -1,103 +1,160 @@
 <!DOCTYPE html>
-<html lang="pt">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Catalogo</title>
-
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Pacotes</title>
     <style>
-
-
-      body {
-        font-family: Arial, sans-serif;
-        background-color: rgba(255, 127, 53, 0.932);
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      h1 {
-        font-size: 32px;
-        text-align: center;
-        color: #f1f1f1;
-        margin-top: 20px;
-        font-weight: bold;
-      }
-
-      .package-list {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        margin: 20px;
-      }
-
-      .package {
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        width: 300px;
-        margin: 10px;
-        cursor: pointer;
-        transition: transform 0.2s;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .package:hover {
-        transform: scale(1.05);
-      }
-
-      .package-image {
-        width: 100%;
-        height: auto;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-      }
-
-      .package-description {
-        padding: 20px;
-        flex-grow: 1;
-      }
-
-      .package-title {
-        text-align: center;
-        font-weight: bold;
-        color: #333;
-        margin-top: 0;
-      }
-
-      .package-info {
-        color: #777;
-        margin-bottom: 10px;
-      }
+        /* Estilos novos e modernizados */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .package-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .package {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .package:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .package-image {
+            width: 100%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .package-description {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .package-title {
+            font-size: 24px;
+            color: #555;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .package-info {
+            font-size: 14px;
+            color: #777;
+            margin: 5px 0;
+        }
+        .weather-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #444;
+        }
+        .weather-day {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .weather-day:last-child {
+            border-bottom: none;
+        }
+        .weather-date {
+            flex: 1;
+            text-align: left;
+        }
+        .weather-temp {
+            flex: 1;
+            text-align: center;
+        }
+        .weather-icon {
+            flex: 0;
+            text-align: right;
+        }
+        .weather-day img {
+            width: 30px;
+            height: 30px;
+        }
     </style>
-
-    <script>
-      function enviarValor(elemento) {
-        var valor = elemento.getAttribute('data-value');
-        var url = '/efetiva_compra?id=' + valor;
-        window.location.href = url;
-      }
-    </script>
-
-  </head>
-  <body>
+</head>
+<body>
     <h1>Os melhores pacotes você encontra aqui</h1>
     <div class="package-list">
-      {% for elemento in list_catalogo %}
-      <div class="package" id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)">
-        <img class="package-image" src="/static/img/{{ elemento[2]+'-'+elemento[1]+'.jpg' }}" />
-        <div class="package-description">
-          <h2 class="package-title">{{ elemento[4] }}</h2>
-          <p class="package-info"><strong>Destino:</strong> {{ elemento[2] }}</p>
-          <p class="package-info"><strong>Preço:</strong> R$ {{ elemento[3] }}</p>
-          <p class="package-info"><strong>Ida:</strong> {{ elemento[5] }}</p>
-          <p class="package-info"><strong>Volta:</strong> {{ elemento[6] }}</p>
+        {% for elemento in list_catalogo %}
+        <div class="package" id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)">
+            <img class="package-image" src="/static/img/{{ elemento[2]+'-'+elemento[1]+'.jpg' }}" alt="Imagem do pacote">
+            <div class="package-description">
+                <h2 class="package-title">{{ elemento[4] }}</h2>
+                <p class="package-info"><strong>Destino:</strong> {{ elemento[2] }}</p>
+                <p class="package-info"><strong>Preço:</strong> R$ {{ elemento[3] }}</p>
+                <p class="package-info"><strong>Ida:</strong> {{ elemento[5] }}</p>
+                <p class="package-info"><strong>Volta:</strong> {{ elemento[6] }}</p>
+                <div id="weather-info-{{ elemento[0] }}" class="weather-info"></div>
+            </div>
         </div>
-      </div>
-      {% endfor %}
+        {% endfor %}
     </div>
-  </body>
-</html>
+    <script>
+        function enviarValor(elemento) {
+            var valor = elemento.getAttribute('data-value');
+            var url = '/efetiva_compra?id=' + valor;
+            window.location.href = url;
+        }
 
+        function fetchWeather(city, country, startDate, endDate, packageId) {
+            fetch(`/weather?city=${city}&country=${country}&start_date=${startDate}&end_date=${endDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayWeather(data, packageId);
+                });
+        }
+
+        function displayWeather(data, packageId) {
+            let weatherElement = document.getElementById(`weather-info-${packageId}`);
+            if (data.error) {
+                weatherElement.innerHTML = `<p>Erro ao obter previsão do tempo</p>`;
+            } else {
+                weatherElement.innerHTML = data.slice(0, 5).map(day => `
+                    <div class="weather-day">
+                        <div class="weather-date">${new Date(day.date).toLocaleDateString()}</div>
+                        <div class="weather-temp">Min: ${day.min}°C Max: ${day.max}°C</div>
+                        <div class="weather-icon"><img src="https://openweathermap.org/img/wn/${day.icon}.png" alt="${day.description}"></div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const packages = [
+                {% for elemento in list_catalogo %}
+                { city: '{{ elemento[2] }}', country: '{{ elemento[1] }}', id: '{{ elemento[0] }}', start_date: '{{ elemento[5] }}', end_date: '{{ elemento[6] }}' },
+                {% endfor %}
+            ];
+
+            packages.forEach(pkg => {
+                fetchWeather(pkg.city, pkg.country, pkg.start_date, pkg.end_date, pkg.id);
+            });
+        });
+    </script>
+</body>
+</html>

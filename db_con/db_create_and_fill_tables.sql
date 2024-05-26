@@ -1,6 +1,8 @@
+CREATE database db_projetoPI;
+
 -- TB_CLIENTS
 CREATE TABLE TB_CLIENTS (
-    CD_ID INT PRIMARY KEY IDENTITY(1,1),
+    CD_ID INT PRIMARY KEY AUTO_INCREMENT,
     DC_FULLNAME VARCHAR(100),
     DT_BIRTHDATE DATE,
     DC_DOCUMENT VARCHAR(14) UNIQUE,
@@ -8,16 +10,14 @@ CREATE TABLE TB_CLIENTS (
     DC_PHONE VARCHAR(12)
 );
 
--- TB_DESTINY
 CREATE TABLE TB_DESTINY (
-    CD_ID INT IDENTITY(1,1) PRIMARY KEY,
+    CD_ID INT PRIMARY KEY AUTO_INCREMENT,
     DC_COUNTRY VARCHAR(50),
     DC_CITY VARCHAR(50)
 );
 
--- TB_PACKAGE
 CREATE TABLE TB_PACKAGE (
-    CD_ID INT IDENTITY(1,1) PRIMARY KEY, 
+    CD_ID INT PRIMARY KEY AUTO_INCREMENT, 
     ID_DESTINY INT NOT NULL, 
     VL_VALUE DECIMAL(10, 2) NOT NULL, 
     DC_DESCRIPTION TEXT, 
@@ -27,9 +27,8 @@ CREATE TABLE TB_PACKAGE (
     FOREIGN KEY (ID_DESTINY) REFERENCES TB_DESTINY(CD_ID)
 );
 
--- TB_SALES
 CREATE TABLE TB_SALES ( 
-    DC_ID INT IDENTITY(1,1) PRIMARY KEY,
+    DC_ID INT PRIMARY KEY AUTO_INCREMENT,
     DC_FULLNAME VARCHAR(255), 
     DT_BIRTHDATE DATE, 
     DC_SEX CHAR(1), 
@@ -45,29 +44,48 @@ CREATE TABLE TB_SALES (
 );
 
  --Inserir destinos
-INSERT INTO tb_destiny (DC_COUNTRY, DC_CITY) VALUES ('Brasil', 'Rio de Janeiro'), 
-('Estados Unidos', 'Nova Iorque'), ('França', 'Paris'), ('Reino Unido', 'Londres'), 
-('Itália','Roma'),('Espanha', 'Barcelona'), ('Austrália', 'Sydney'), ('Alemanha', 'Berlim'), 
-('Canadá', 'Toronto'), ('Japão', 'Tóquio'), ('Portugal', 'Lisboa'), ('Inglaterra', 'Londres'), 
-('Canadá', 'Vancouver'), ('Egito', 'Cairo'), ('Austrália', 'Melbourne'), ('Espanha', 'Madri'), 
-('Estados Unidos', 'Los Angeles'), ('França', 'Nice'), ('Japão', 'Osaka'), ('Índia', 'Delhi'), 
-('Alemanha', 'Hamburgo'), ('Brasil', 'São Paulo'),('México', 'Cidade do México'), 
-('Índia', 'Mumbai'), ('África do Sul', 'Cidade do Cabo'), ('Argentina', 'Buenos Aires'),
-('Suécia', 'Estocolmo'), ('China', 'Pequim');
-
+INSERT INTO TB_DESTINY (DC_COUNTRY, DC_CITY) VALUES 
+    ('Brasil', 'Rio de Janeiro'), 
+    ('Estados Unidos', 'Nova Iorque'), 
+    ('França', 'Paris'), 
+    ('Reino Unido', 'Londres'), 
+    ('Itália', 'Roma'),
+    ('Espanha', 'Barcelona'), 
+    ('Austrália', 'Sydney'), 
+    ('Alemanha', 'Berlim'), 
+    ('Canadá', 'Toronto'), 
+    ('Japão', 'Tóquio'), 
+    ('Portugal', 'Lisboa'), 
+    ('Inglaterra', 'Londres'), 
+    ('Canadá', 'Vancouver'), 
+    ('Egito', 'Cairo'), 
+    ('Austrália', 'Melbourne'), 
+    ('Espanha', 'Madri'), 
+    ('Estados Unidos', 'Los Angeles'), 
+    ('França', 'Nice'), 
+    ('Japão', 'Osaka'), 
+    ('Índia', 'Delhi'), 
+    ('Alemanha', 'Hamburgo'), 
+    ('Brasil', 'São Paulo'),
+    ('México', 'Cidade do México'), 
+    ('Índia', 'Mumbai'), 
+    ('África do Sul', 'Cidade do Cabo'), 
+    ('Argentina', 'Buenos Aires'),
+    ('Suécia', 'Estocolmo'), 
+    ('China', 'Pequim');
 
  --Inserir pacotes
-INSERT INTO tb_package (id_DESTINY, VL_VALUE, DC_DESCRIPTION, NR_AMOUNT, DT_START_DATE, DT_END_DATE) 
-VALUES (1, 500.00, 'Pacote de férias para praia', 20, '2023-11-01', '2023-11-15'), 
-(2, 800.00, 'Pacote de aventura nas montanhas', 15, '2023-10-20', '2023-10-30'), 
-(3, 350.00, 'Pacote cultural na cidade', 30, '2023-12-05', '2023-12-20'), 
-(4, 700.00, 'Pacote de esportes aquáticos', 25, '2023-11-15', '2023-11-30'), 
-(5, 900.00, 'Pacote de lua de mel', 10, '2023-10-25', '2023-11-05'), 
-(6, 600.00, 'Pacote de relaxamento na floresta', 18, '2023-11-10', '2023-11-28'), 
-(7, 450.00, 'Pacote gastronômico na cidade', 12, '2023-12-15', '2023-12-30'), 
-(8, 550.00, 'Pacote de ecoturismo', 22, '2023-10-15', '2023-10-25'), 
-(9, 750.00, 'Pacote de esqui nas montanhas', 16, '2023-12-01', '2023-12-15'), 
-(10, 400.00, 'Pacote de turismo histórico', 28, '2023-11-05', '2023-11-20');
+INSERT INTO TB_PACKAGE (ID_DESTINY, VL_VALUE, DC_DESCRIPTION, NR_AMOUNT, DT_START_DATE, DT_END_DATE) VALUES 
+(1, 500.00, 'Pacote de Férias para praia', 20, '2024-07-02', '2024-07-08'), 
+(2, 800.00, 'Pacote de Aventura nas montanhas', 15, '2024-07-02', '2024-07-08'), 
+(3, 350.00, 'Pacote Cultural na cidade', 30, '2024-07-05', '2024-07-11'), 
+(4, 700.00, 'Pacote de Esportes Aquáticos', 25, '2024-07-06', '2024-07-12'), 
+(5, 900.00, 'Pacote de Lua de Mel', 10, '2024-08-01', '2024-08-09'), 
+(6, 600.00, 'Pacote de Relaxamento na Floresta', 18, '2024-08-09', '2024-08-15'), 
+(7, 450.00, 'Pacote Gastronômico na cidade', 12, '2024-09-15', '2024-09-22'), 
+(8, 550.00, 'Pacote de Ecoturismo', 22, '2024-09-22', '2024-09-28'), 
+(9, 750.00, 'Pacote de Esqui nas montanhas', 16, '2024-11-01', '2024-11-08'), 
+(10, 400.00, 'Pacote de Turismo Histórico', 28, '2024-12-05', '2024-12-12');
 
 
  --Inserindo valores de vendas

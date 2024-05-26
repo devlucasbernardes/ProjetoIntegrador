@@ -63,6 +63,6 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'foxtravelapp'
+          app-name: 'univesp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F4A3C51D4C094C1C993EE0A94E7F13B3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CB29C2A7B4324BE7AB0231DD0889BD6D }}

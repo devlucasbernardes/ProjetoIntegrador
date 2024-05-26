@@ -90,62 +90,57 @@
     </style>
 </head>
 <body>
-    <h1>Os melhores pacotes você encontra aqui</h1>
-    <div class="package-list">
-      {% for elemento in list_catalogo %}
-      <div class="package" id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)">
-        <img class="package-image" src="/static/img/{{ elemento[2]+'-'+elemento[1]+'.jpg' }}" />
-        <div class="package-description">
-          <h2 class="package-title">{{ elemento[4] }}</h2>
-          <p class="package-info"><strong>Destino:</strong> {{ elemento[2] }}</p>
-          <p class="package-info"><strong>Preço:</strong> R$ {{ elemento[3] }}</p>
-          <p class="package-info"><strong>Ida:</strong> {{ elemento[5] }}</p>
-          <p class="package-info"><strong>Volta:</strong> {{ elemento[6] }}</p>
-          <div id="weather-info-{{ elemento[0] }}" class="weather-info"></div>
-        </div>
+  <h1>Os melhores pacotes você encontra aqui</h1>
+  <div class="package-list">
+    {% for elemento in list_catalogo %}
+    <div class="package" id="{{ elemento[0] }}" data-value="{{ elemento[0] }}" onclick="enviarValor(this)">
+      <img class="package-image" src="/static/img/{{ elemento[2]+'-'+elemento[1]+'.jpg' }}" />
+      <div class="package-description">
+        <h2 class="package-title">{{ elemento[4] }}</h2>
+        <p class="package-info"><strong>Destino:</strong> {{ elemento[2] }}</p>
+        <p class="package-info"><strong>Preço:</strong> R$ {{ elemento[3] }}</p>
+        <p class="package-info"><strong>Ida:</strong> {{ elemento[5] }}</p>
+        <p class="package-info"><strong>Volta:</strong> {{ elemento[6] }}</p>
+        <div id="weather-info-{{ elemento[0] }}" class="weather-info"></div>
       </div>
-      {% endfor %}
     </div>
-    <script>
-      function enviarValor(elemento) {
-        var valor = elemento.getAttribute('data-value');
-        var url = '/efetiva_compra?id=' + valor;
-        window.location.href = url;
-      }
-      function fetchWeather(city, country, packageId) {
-        fetch(`/weather?city=${city}&country=${country}`)
-            .then(response => response.json())
-            .then(data => {
-                displayWeather(data, packageId);
-            });
-      }
+    {% endfor %}
+  </div>
+  <script>
+    function enviarValor(elemento) {
+      var valor = elemento.getAttribute('data-value');
+      var url = '/efetiva_compra?id=' + valor;
+      window.location.href = url;
+    }
 
-      function displayWeather(data, packageId) {
-          let weatherElement = document.getElementById(`weather-info-${packageId}`);
-          weatherElement.innerHTML = `
-              <h3>Previsão Climática para ${data.city.name}</h3>
-              ${data.list.slice(0, 7).map(item => `
-                  <div class="weather-item">
-                      <p>${new Date(item.dt_txt).toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' })} ${new Date(item.dt_txt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</p>
-                      <img src="http://openweathermap.org/img/wn/${item.weather[0].icon}.png" alt="${item.weather[0].description}" />
-                      <p>${item.main.temp}°C, ${item.weather[0].description}</p>
-                  </div>
-              `).join('')}
-          `;
-      }
+    function fetchWeather(city, country, startDate, packageId) {
+      fetch(`/weather?city=${city}&country=${country}&start_date=${startDate}`)
+          .then(response => response.json())
+          .then(data => {
+              displayWeather(data, packageId);
+          });
+    }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const packages = [
-            {% for elemento in list_catalogo %}
-            { city: '{{ elemento[2] }}', country: '{{ elemento[1] }}', id: '{{ elemento[0] }}' },
-            {% endfor %}
-        ];
-        
-        packages.forEach(pkg => {
-            fetchWeather(pkg.city, pkg.country, pkg.id);
-        });
-    });
-    </script>
+    function displayWeather(data, packageId) {
+        let weatherElement = document.getElementById(`weather-info-${packageId}`);
+        if (data.error) {
+            weatherElement.innerHTML = `<p>Erro ao obter previsão do tempo</p>`;
+        } else {
+            weatherElement.innerHTML = `<p>Min: ${data.min}°C, Max: ${data.max}°C</p>`;
+        }
+    }
+
+  document.addEventListener("DOMContentLoaded", function() {
+      const packages = [
+          {% for elemento in list_catalogo %}
+          { city: '{{ elemento[2] }}', country: '{{ elemento[1] }}', id: '{{ elemento[0] }}', start_date: '{{ elemento[5] }}' },
+          {% endfor %}
+      ];
+
+      packages.forEach(pkg => {
+          fetchWeather(pkg.city, pkg.country, pkg.start_date, pkg.id);
+      });
+  });
+  </script>
 </body>
 </html>
-

@@ -1,15 +1,67 @@
-from mysql.connector.errors import IntegrityError
-import mysql.connector
 import requests
-
 from decimal import Decimal
+import mysql.connector
+from mysql.connector.errors import IntegrityError
+
+OPENWEATHER_API_KEY = '861efe48523f367ec66f837be56cd43b'
+OPENCAGE_API_KEY = '7f88cd02052643f498ab52d1bc8f7128'
 
 
-def get_weather_forecast(city, country, api_key):
-    url = f"http://api.openweathermap.org/data/2.5/forecast?q={city},{country}&appid={api_key}&units=metric"
+def get_coordinates(city, country):
+    url = f'https://api.opencagedata.com/geocode/v1/json?q={city},{country}&key={OPENCAGE_API_KEY}'
     response = requests.get(url)
-    data = response.json()
-    return data
+    if response.status_code == 200:
+        data = response.json()
+        if data['results']:
+            coordinates = data['results'][0]['geometry']
+            return coordinates['lat'], coordinates['lng']
+    return None, None
+
+def get_weather_forecast(lat, lon, date, api_key):
+    url = f'https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude=hourly,minutely&appid={api_key}&units=metric'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        if 'daily' in data:
+            min_temp = data['daily'][0]['temp']['min']
+            max_temp = data['daily'][0]['temp']['max']
+            return {'min': min_temp, 'max': max_temp}
+        else:
+            return {'error': 'No daily data available'}
+    else:
+        return {'error': 'Unable to fetch weather data'}
+
+def get_catalogo():
+    conn = None
+    cursor = None
+    try:
+        conn = create_conn()
+        cursor = conn.cursor()
+        sql_query = """SELECT p.CD_ID AS PackageID, d.DC_COUNTRY AS DestinationCountry, d.DC_CITY AS DestinationCity,
+                       p.VL_VALUE AS PackageValue, p.DC_DESCRIPTION AS PackageDescription, p.DT_START_DATE AS StartDate, 
+                       p.DT_END_DATE AS EndDate FROM TB_PACKAGE AS p INNER JOIN TB_DESTINY AS d ON p.id_DESTINY = d.CD_ID;"""
+        cursor.execute(sql_query)
+        resultados = cursor.fetchall()
+        resultados_formatados = []
+        for resultado in resultados:
+            resultado_formatado = list(resultado)
+            resultado_formatado[5] = resultado_formatado[5].strftime("%Y-%m-%d")
+            resultado_formatado[6] = resultado_formatado[6].strftime("%Y-%m-%d")
+            resultado_formatado[3] = '{:.2f}'.format(resultado_formatado[3])
+            resultados_formatados.append(resultado_formatado)
+
+        return resultados_formatados
+
+    except mysql.connector.Error as err:
+        print("Erro ao acessar o banco de dados:", err)
+        return []
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+    
 
 def cambio_hoje(moeda, base):
     # Defina os cabeçalhos personalizados
@@ -50,6 +102,7 @@ def create_conn():
         database="db_projetopi"
     )
     return conn
+
 def efetiva_compra():
     return "Ok"
 
@@ -81,40 +134,6 @@ def valida_idcatalogo(id):
         # Fechar o cursor e a conexão
         cursor.close()
         conn.close()
-
-def get_catalogo():
-    conn = None
-    cursor = None
-    try:
-        conn = create_conn()
-        cursor = conn.cursor()
-        sql_query = """SELECT p.CD_ID AS PackageID, d.DC_COUNTRY AS DestinationCountry, d.DC_CITY AS DestinationCity,
-                       p.VL_VALUE AS PackageValue, p.DC_DESCRIPTION AS PackageDescription, p.DT_START_DATE AS StartDate, 
-                       p.DT_END_DATE AS EndDate FROM TB_PACKAGE AS p INNER JOIN TB_DESTINY AS d ON p.id_DESTINY = d.CD_ID;"""
-        cursor.execute(sql_query)
-        resultados = cursor.fetchall()
-        print("Resultados obtidos:", resultados)  # Debug: Verifique os resultados obtidos
-        return resultados
-
-        resultados_formatados = []
-        for resultado in resultados:
-            resultado_formatado = list(resultado)
-            resultado_formatado[5] = resultado_formatado[5].strftime("%d/%m/%Y")
-            resultado_formatado[6] = resultado_formatado[6].strftime("%d/%m/%Y")
-            resultado_formatado[3] = '{:.2f}'.format(resultado_formatado[3])
-            resultados_formatados.append(resultado_formatado)
-
-        return resultados_formatados
-
-    except mysql.connector.Error as err:
-        print("Erro ao acessar o banco de dados:", err)
-        return []
-
-    finally:
-        if cursor:
-            cursor.close()
-        if conn:
-            conn.close()
 
 def format_decimal(value):
     # Formata o valor decimal com duas casas decimais

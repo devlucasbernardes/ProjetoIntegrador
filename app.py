@@ -26,9 +26,15 @@ def catalogo():
 def weather():
     city = request.args.get('city')
     country = request.args.get('country')
-    data = get_weather_forecast(city, country, API_KEY)
-    return jsonify(data)  
-
+    start_date = request.args.get('start_date')
+    lat, lon = get_coordinates(city, country)
+    if lat is not None and lon is not None:
+        data = get_weather_forecast(lat, lon, start_date, OPENWEATHER_API_KEY)
+        return jsonify(data)
+    else:
+        return jsonify({'error': 'Unable to fetch coordinates'})
+    
+    
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':

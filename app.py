@@ -4,7 +4,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-API_KEY = '861efe48523f367ec66f837be56cd43b'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,9 +26,10 @@ def weather():
     city = request.args.get('city')
     country = request.args.get('country')
     start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
     lat, lon = get_coordinates(city, country)
     if lat is not None and lon is not None:
-        data = get_weather_forecast(lat, lon, start_date, OPENWEATHER_API_KEY)
+        data = get_weather_forecast(lat, lon, start_date, end_date, OPENWEATHER_API_KEY)
         return jsonify(data)
     else:
         return jsonify({'error': 'Unable to fetch coordinates'})

@@ -1,9 +1,10 @@
 import requests
 from decimal import Decimal
 import mysql.connector
+from datetime import datetime, timedelta
 from mysql.connector.errors import IntegrityError
 
-OPENWEATHER_API_KEY = '861efe48523f367ec66f837be56cd43b'
+OPENWEATHER_API_KEY = 'a9518acd1794f03c2e838de98391014a'
 OPENCAGE_API_KEY = '7f88cd02052643f498ab52d1bc8f7128'
 
 
@@ -17,19 +18,36 @@ def get_coordinates(city, country):
             return coordinates['lat'], coordinates['lng']
     return None, None
 
-def get_weather_forecast(lat, lon, date, api_key):
-    url = f'https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude=hourly,minutely&appid={api_key}&units=metric'
+def get_weather_forecast(lat, lon, start_date, end_date, api_key):
+    start_date = datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.strptime(end_date, '%Y-%m-%d')
+    delta = end_date - start_date
+    forecasts = []
+
+    url = f'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={api_key}&units=metric&lang=pt_br'
     response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json()
-        if 'daily' in data:
-            min_temp = data['daily'][0]['temp']['min']
-            max_temp = data['daily'][0]['temp']['max']
-            return {'min': min_temp, 'max': max_temp}
-        else:
-            return {'error': 'No daily data available'}
-    else:
-        return {'error': 'Unable to fetch weather data'}
+    response.raise_for_status()
+    data = response.json()
+
+    # Processar a resposta da API
+    for forecast in data['list']:
+        forecast_date = datetime.strptime(forecast['dt_txt'], '%Y-%m-%d %H:%M:%S')
+        if start_date <= forecast_date <= end_date:
+            min_temp = forecast['main']['temp_min']
+            max_temp = forecast['main']['temp_max']
+            weather_main = forecast['weather'][0]['main']
+            weather_description = forecast['weather'][0]['description']
+            weather_icon = forecast['weather'][0]['icon']
+            forecasts.append({
+                'date': forecast_date.strftime('%Y-%m-%d %H:%M:%S'),
+                'min': min_temp,
+                'max': max_temp,
+                'main': weather_main,
+                'description': weather_description,
+                'icon': weather_icon
+            })
+
+    return forecasts
 
 def get_catalogo():
     conn = None

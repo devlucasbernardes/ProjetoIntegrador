@@ -117,7 +117,7 @@ def create_conn():
         host="univesp-db.mysql.database.azure.com",
         user="root_user",
         password="Uni!vesp@2024",
-        database="univesp-db"
+        database="db_projetopi"
     )
     return conn
 

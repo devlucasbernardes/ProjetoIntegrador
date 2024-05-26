@@ -120,7 +120,7 @@
             var url = '/efetiva_compra?id=' + valor;
             window.location.href = url;
         }
-
+  
         function fetchWeather(city, country, startDate, endDate, packageId) {
             fetch(`/weather?city=${city}&country=${country}&start_date=${startDate}&end_date=${endDate}`)
                 .then(response => response.json())
@@ -128,33 +128,53 @@
                     displayWeather(data, packageId);
                 });
         }
-
+  
         function displayWeather(data, packageId) {
             let weatherElement = document.getElementById(`weather-info-${packageId}`);
             if (data.error) {
                 weatherElement.innerHTML = `<p>Erro ao obter previsão do tempo</p>`;
             } else {
-                weatherElement.innerHTML = data.slice(0, 5).map(day => `
+                // Aggregate temperatures for each day
+                let dailyData = {};
+                data.forEach(forecast => {
+                    let date = new Date(forecast.date).toLocaleDateString();
+                    if (!dailyData[date]) {
+                        dailyData[date] = {
+                            min: forecast.min,
+                            max: forecast.max,
+                            icon: forecast.icon,
+                            description: forecast.description
+                        };
+                    } else {
+                        dailyData[date].min = Math.min(dailyData[date].min, forecast.min);
+                        dailyData[date].max = Math.max(dailyData[date].max, forecast.max);
+                    }
+                });
+  
+                // Limit to 5 days
+                let days = Object.keys(dailyData).slice(0, 5);
+  
+                weatherElement.innerHTML = days.map(day => `
                     <div class="weather-day">
-                        <div class="weather-date">${new Date(day.date).toLocaleDateString()}</div>
-                        <div class="weather-temp">Min: ${day.min}°C Max: ${day.max}°C</div>
-                        <div class="weather-icon"><img src="https://openweathermap.org/img/wn/${day.icon}.png" alt="${day.description}"></div>
+                        <div class="weather-date">${day}</div>
+                        <div class="weather-temp">Min: ${dailyData[day].min}°C Max: ${dailyData[day].max}°C</div>
+                        <div class="weather-icon"><img src="https://openweathermap.org/img/wn/${dailyData[day].icon}.png" alt="${dailyData[day].description}"></div>
                     </div>
                 `).join('');
             }
         }
-
+  
         document.addEventListener("DOMContentLoaded", function() {
             const packages = [
                 {% for elemento in list_catalogo %}
                 { city: '{{ elemento[2] }}', country: '{{ elemento[1] }}', id: '{{ elemento[0] }}', start_date: '{{ elemento[5] }}', end_date: '{{ elemento[6] }}' },
                 {% endfor %}
             ];
-
+  
             packages.forEach(pkg => {
                 fetchWeather(pkg.city, pkg.country, pkg.start_date, pkg.end_date, pkg.id);
             });
         });
     </script>
-</body>
-</html>
+  </body>
+  </html>

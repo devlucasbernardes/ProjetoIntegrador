@@ -115,9 +115,9 @@ def convert_cambio(de, para, qtd):
 def create_conn():
     conn = mysql.connector.connect(
         host="univesp-db.mysql.database.azure.com",
-        user="univesp-db",
-        password="root_user",
-        database="Uni!vesp@2024"
+        user="root_user",
+        password="Uni!vesp@2024",
+        database="univesp-db"
     )
     return conn
 
